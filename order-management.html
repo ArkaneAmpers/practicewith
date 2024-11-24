@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management System</title>
+    <style>
+        /* General body styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* Header styles */
+        h1 {
+            text-align: center;
+            padding: 20px;
+            background-color: #0066cc;
+            color: white;
+            margin: 0;
+        }
+
+        /* Container for each section */
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Input fields styling */
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        /* Labels styling */
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: inline-block;
+        }
+
+        /* Button styles */
+        button {
+            background-color: #0066cc;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #004d99;
+        }
+
+        /* Error message styling */
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 12px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        /* Receipt styles */
+        .receipt-container {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        .receipt-container h3 {
+            text-align: center;
+            color: #0066cc;
+        }
+
+        .receipt-container p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .receipt-container ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .receipt-container li {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* Style for the "Start New Order" button */
+        .start-new-order-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .start-new-order-btn:hover {
+            background-color: #218838;
+        }
+
+    </style>
+</head>
+<body>
+
+<h1>Order Management System</h1>
+
+<!-- Customer Information Section -->
+<div class="container">
+    <h3>Enter Customer Information</h3>
+    <label for="customerName">Name:</label>
+    <input type="text" id="customerName" placeholder="Enter customer name"><br>
+    <label for="customerPhone">Phone Number:</label>
+    <input type="text" id="customerPhone" placeholder="Enter phone number"><br>
+    <label for="customerAddress">Address:</label>
+    <input type="text" id="customerAddress" placeholder="Enter address"><br>
+    <label for="customerEmail">Email:</label>
+    <input type="email" id="customerEmail" placeholder="Enter email"><br>
+    <label for="employeeName">Employee Name (Handled By):</label>
+    <input type="text" id="employeeName" placeholder="Enter employee's name"><br>
+</div>
+
+<!-- Clothing Item Selection -->
+<div class="container">
+    <h3>Select Clothing Items</h3>
+    <label for="clothing">Select Clothing:</label>
+    <select id="clothing" onchange="showClothingOptions()">
+        <option value="">--Select--</option>
+        <option value="Hoodie">Hoodie</option>
+        <option value="Sweatshirt">Sweatshirt</option>
+        <option value="Polo Shirt">Polo Shirt</option>
+        <option value="T-Shirt">T-Shirt</option>
+    </select><br>
+
+    <div id="clothingOptions" style="display:none;">
+        <label id="clothingSubLabel"></label><br>
+        <!-- Hoodie Options -->
+        <div id="HoodieOptions" style="display:none;">
+            <label for="hoodieType">Hoodie Type:</label>
+            <select id="hoodieType">
+                <option value="Pullover">Pullover</option>
+                <option value="Zip-Up">Zip-Up</option>
+            </select><br>
+            <label for="pocketType">Pocket Type:</label>
+            <select id="pocketType">
+                <option value="Kangaroo">Kangaroo</option>
+                <option value="Side Pockets">Side Pockets</option>
+            </select><br>
+        </div>
+
+        <!-- Sweatshirt Options -->
+        <div id="SweatshirtOptions" style="display:none;">
+            <label for="cuffType">Cuff Type:</label>
+            <select id="cuffType">
+                <option value="Ribbed">Ribbed</option>
+                <option value="Elastic">Elastic</option>
+            </select><br>
+            <label for="fit">Fit:</label>
+            <select id="fit">
+                <option value="Regular">Regular</option>
+                <option value="Slim">Slim</option>
+            </select><br>
+        </div>
+
+        <!-- Polo Shirt Options -->
+        <div id="PoloShirtOptions" style="display:none;">
+            <label for="collarType">Collar Type:</label>
+            <select id="collarType">
+                <option value="Ribbed">Ribbed</option>
+                <option value="Flat">Flat</option>
+            </select><br>
+        </div>
+
+        <!-- T-Shirt Options -->
+        <div id="TShirtOptions" style="display:none;">
+            <label for="neckType">Neck Type:</label>
+            <select id="neckType">
+                <option value="V-Neck">V-Neck</option>
+                <option value="Crew Neck">Crew Neck</option>
+            </select><br>
+        </div>
+    </div>
+
+    <label for="quantity">Quantity:</label>
+    <input type="number" id="quantity" value="1" min="1"><br>
+
+    <button id="addToOrderButton" onclick="addItemToOrder()" disabled>Add to Order</button>
+</div>
+
+<!-- Order Summary Section -->
+<div class="container">
+    <h3>Order Summary</h3>
+    <table id="orderSummaryTable">
+        <thead>
+            <tr>
+                <th>Clothing Item</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <p><strong>Total Order Price: ₱<span id="totalOrderPrice">0</span></strong></p>
+</div>
+
+<!-- Payment Information Section -->
+<div class="container">
+    <h3>Payment Information</h3>
+    <label for="paymentMethod">Payment Method:</label>
+    <select id="paymentMethod">
+        <option value="">--Select--</option>
+        <option value="cash">Cash</option>
+        <option value="card">Credit/Debit Card</option>
+    </select><br>
+    <label for="amountGiven">Amount Given (₱):</label>
+    <input type="number" id="amountGiven" value="0" min="0" step="0.01"><br>
+    <span id="paymentError" class="error"></span><br>
+
+    <button onclick="confirmOrder()">Confirm Order</button>
+</div>
+
+<!-- Start New Order Button -->
+<div class="container">
+    <button class="start-new-order-btn" onclick="startNewOrder()">Start New Order</button>
+</div>
+
+<!-- Receipt Section -->
+<div class="receipt-container" id="receiptContainer" style="display:none;">
+    <h3>Order Receipt</h3>
+    <p><strong>Customer:</strong> <span id="receiptCustomerName"></span></p>
+    <p><strong>Order Summary:</strong></p>
+    <ul id="receiptItems"></ul>
+    <p><strong>Total Price:</strong> ₱<span id="receiptTotalPrice"></span></p>
+    <p><strong>Amount Paid:</strong> ₱<span id="receiptAmountPaid"></span></p>
+    <p><strong>Change:</strong> ₱<span id="receiptChange"></span></p>
+</div>
+
+<script>
+    let clothingOptions = {
+        'Hoodie': ['Pullover', 'Zip-Up'],
+        'Sweatshirt': ['Ribbed', 'Elastic'],
+        'Polo Shirt': ['Flat', 'Ribbed'],
+        'T-Shirt': ['Crew Neck', 'V-Neck']
+    };
+
+    let order = [];
+    let clothingPrices = {
+        'Hoodie': 500,
+        'Sweatshirt': 400,
+        'Polo Shirt': 350,
+        'T-Shirt': 250
+    };
+
+    function showClothingOptions() {
+        const clothing = document.getElementById('clothing').value;
+        const clothingOptionsDiv = document.getElementById('clothingOptions');
+        const clothingSubLabel = document.getElementById('clothingSubLabel');
+        const selectedItemDivs = document.querySelectorAll('#clothingOptions > div');
+
+        selectedItemDivs.forEach(div => div.style.display = 'none');
+        clothingOptionsDiv.style.display = clothing ? 'block' : 'none';
+        clothingSubLabel.textContent = clothing ? `Select options for ${clothing}:` : '';
+
+        if (clothing) {
+            document.getElementById(`${clothing}Options`).style.display = 'block';
+            document.getElementById('addToOrderButton').disabled = false;
+        } else {
+            document.getElementById('addToOrderButton').disabled = true;
+        }
+    }
+
+    function addItemToOrder() {
+        const clothing = document.getElementById('clothing').value;
+        const quantity = parseInt(document.getElementById('quantity').value);
+        const price = clothingPrices[clothing];
+        const total = price * quantity;
+
+        const orderItem = { clothing, quantity, price, total };
+        order.push(orderItem);
+
+        updateOrderSummary();
+    }
+
+    function updateOrderSummary() {
+        const tableBody = document.getElementById('orderSummaryTable').getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = '';
+
+        let totalPrice = 0;
+
+        order.forEach(item => {
+            const row = tableBody.insertRow();
+            row.innerHTML = `
+                <td>${item.clothing}</td>
+                <td>${item.quantity}</td>
+                <td>₱${item.price}</td>
+                <td>₱${item.total}</td>
+            `;
+            totalPrice += item.total;
+        });
+
+        document.getElementById('totalOrderPrice').textContent = totalPrice;
+    }
+
+    function confirmOrder() {
+        const paymentMethod = document.getElementById('paymentMethod').value;
+        const amountGiven = parseFloat(document.getElementById('amountGiven').value);
+        const totalOrderPrice = parseFloat(document.getElementById('totalOrderPrice').textContent);
+        const customerName = document.getElementById('customerName').value;
+
+        if (!paymentMethod || amountGiven < totalOrderPrice) {
+            document.getElementById('paymentError').textContent = 'Please ensure payment is sufficient and method is selected.';
+            return;
+        }
+
+        const change = amountGiven - totalOrderPrice;
+
+        showReceipt(customerName, change);
+    }
+
+    function showReceipt(customerName, change) {
+        document.getElementById('receiptCustomerName').textContent = customerName;
+        const itemsList = document.getElementById('receiptItems');
+        itemsList.innerHTML = '';
+
+        order.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `${item.quantity} x ${item.clothing} (₱${item.price}) - Total: ₱${item.total}`;
+            itemsList.appendChild(li);
+        });
+
+        document.getElementById('receiptTotalPrice').textContent = document.getElementById('totalOrderPrice').textContent;
+        document.getElementById('receiptAmountPaid').textContent = document.getElementById('amountGiven').value;
+        document.getElementById('receiptChange').textContent = change.toFixed(2);
+
+        document.getElementById('receiptContainer').style.display = 'block';
+    }
+
+    function startNewOrder() {
+        order = [];
+        document.getElementById('receiptContainer').style.display = 'none';
+        document.getElementById('customerName').value = '';
+        document.getElementById('customerPhone').value = '';
+        document.getElementById('customerAddress').value = '';
+        document.getElementById('customerEmail').value = '';
+        document.getElementById('employeeName').value = '';
+        document.getElementById('clothing').value = '';
+        document.getElementById('quantity').value = 1;
+        updateOrderSummary();
+    }
+</script>
+
+</body>
+</html>
